@@ -12,6 +12,9 @@ async function loginAndFetch()
 
   const data = await response.json();
 
+  const title = document.getElementById('title');
+  title.textContent = "Grades";
+
   const loginui = document.getElementById('loginui');
   loginui.remove();
 
@@ -20,7 +23,12 @@ async function loginAndFetch()
 
   const coursedata = parsedData.Gradebook.Courses.Course;
   for ( var i = 0; i < coursedata.length; ++i ) {
-    const courses = document.body.appendChild(document.createElement("p"));
-    courses.textContent = coursedata[i].Marks.Mark[0].CalculatedScoreString;
+    const course = document.body.appendChild(document.createElement("span"));
+    course.textContent = coursedata[i].CourseName;
+
+    const grade = document.body.appendChild(document.createElement("button"));
+    grade.textContent = coursedata[i].Marks.Mark[0].CalculatedScoreString;
+
+    document.body.appendChild(document.createElement("br"));
   }
 }
