@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^5.2.1",
+    "serverless-http": "^4.0.0",
     "studentvue.js": "^0.1.1"
   }
 }
