@@ -1,6 +1,11 @@
 {
+  "scripts": {
+    "build": "next build",
+    "start": "next start"
+  },
   "dependencies": {
     "express": "^5.2.1",
+    "next": "^16.0.10",
     "serverless-http": "^4.0.0",
     "studentvue.js": "^0.1.1"
   }

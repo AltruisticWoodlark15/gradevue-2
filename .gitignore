@@ -1,3 +1,5 @@
+gradevue
 node_modules
+.next
 .*.sw?
 .vercel
