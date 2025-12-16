@@ -17,6 +17,9 @@ function getLetterGrade(percentage)
 
 function drawCourses(parsedData)
 {
+  document.body.innerHTML = "";
+  console.log(parsedData);
+
   const footer = document.getElementById('footer');
   const coursedata = parsedData.Gradebook.Courses.Course;
 
@@ -30,7 +33,7 @@ function drawCourses(parsedData)
     grade.classList.add("coursedata");
     grade.textContent = coursedata[i].Marks.Mark[0].CalculatedScoreString;
     grade.addEventListener("click", function() {
-      drawAssignments(coursedata, i);
+      drawAssignments(parsedData, i);
     });
 
     const br = document.body.insertBefore(document.createElement("br"), footer);
@@ -61,7 +64,7 @@ function calcPercentage(row)
   }
   percentage = totalPoints / totalTotal * 10000;
   percentage = Math.round(percentage) / 100;
-  number.innerText = " (" + percentage + ")";
+  number.innerText = percentage;
   letter.innerText = getLetterGrade(percentage); 
 }
 
@@ -98,8 +101,10 @@ function drawAssignment(table, assignment)
   calcPercentage(row);
 }
 
-function drawAssignments(coursedata, courseID)
+function drawAssignments(parsedData, courseID)
 {
+  const coursedata = parsedData.Gradebook.Courses.Course;
+
   const footer = document.getElementById("footer");
   const courses = document.body.getElementsByClassName("coursedata");
   while ( courses.length > 0 ) {
@@ -115,6 +120,12 @@ function drawAssignments(coursedata, courseID)
   number.id = "number";
   document.body.insertBefore(number, footer); 
 
+  const back = document.body.insertBefore(document.createElement("button"), footer);
+  back.textContent = "Back";
+  back.addEventListener("click", function() {
+    drawCourses(parsedData);
+  });
+
   const assignments = coursedata[courseID].Marks.Mark[0].Assignments.Assignment;
   
   const assignmentTable = document.createElement("table");
@@ -125,32 +136,32 @@ function drawAssignments(coursedata, courseID)
   if ( assignments.length )
     for ( var i = 0; i < assignments.length; ++i ) 
       drawAssignment(assignmentTable, assignments[i]);
-  else drawAssignment(assignments);
+  else drawAssignment(assignmentTable, assignments);
 }
 
 async function loginAndFetch()
 {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+  document.body.innerHTML = "Loading...";
+  
   const response = await fetch("/api/api", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       district: "https://studentvue.vbcps.com",
-      username: document.getElementById('username').value,
-      password: document.getElementById('password').value, 
+      username: username, 
+      password: password,
     })
   });
+  document.body.innerHTML = "";
 
   const data = await response.json();
-  console.log(data);
 
-  const title = document.getElementById('site-title');
+  const title = document.createElement("h1");
+  title.id = "site-title";
   title.textContent = "Grades";
-
-  const tagline = document.getElementById('site-tagline');
-  const loginui = document.getElementById('login-section');
-  
-  tagline.remove();
-  loginui.remove();
+  document.body.appendChild(title);
 
   const parsedData = JSON.parse(data);
   drawCourses(parsedData);
