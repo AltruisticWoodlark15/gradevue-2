@@ -2,14 +2,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   const form = document.querySelector("form");
   
   if (form) {
-    form.style.display = "none";
-    
     form.addEventListener("submit", e => {
       e.preventDefault();
       loginAndFetch();
     });
   }
 
+  document.body.style.visibility = "hidden";
   const loadingMsg = document.createElement("p");
   loadingMsg.id = "initial-loading";
   loadingMsg.textContent = "Loading...";
@@ -43,10 +42,7 @@ const checkSession = async (form, loadingMsg) => {
     }
   } catch (e) {
     if (loadingMsg) loadingMsg.remove();
-
-    if (form) {
-      form.style.display = ""; 
-    }
+    document.body.style.visibility = "visible";
   }
 };
 
