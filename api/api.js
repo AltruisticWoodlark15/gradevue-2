@@ -58,16 +58,13 @@ export default async function handler(req, res) {
     }
 
     const client = await StudentVue.login(district, username, password);
-    let gradebook = await client.getGradebook();
-    if (typeof gradebook !== "string") {
-      gradebook = JSON.stringify(gradebook);
-    }
+    const gradebook = await client.getGradebook();
 
     const encryptedCookie = encrypt(JSON.stringify({ district, username, password }));
 
     res.setHeader("Set-Cookie", `auth_token=${encryptedCookie}; HttpOnly; Secure; Path=/; Max-Age=2592000; SameSite=Strict`);
 
-    return res.status(200).send(gradebook);
+    return res.status(200).json(gradebook);
 
   } catch (err) {
     console.error(err);
