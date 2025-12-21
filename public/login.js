@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  document.body.style.visibility = "hidden";
   const form = document.querySelector("form");
   
   if (form) {
@@ -8,7 +9,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  document.body.style.visibility = "hidden";
   const loadingMsg = document.createElement("p");
   loadingMsg.id = "initial-loading";
   loadingMsg.textContent = "Loading...";
@@ -37,6 +37,7 @@ const checkSession = async (form, loadingMsg) => {
 
       const parsedData = JSON.parse(data);
       drawCourses(parsedData);
+      document.body.style.visibility = "visible";
     } else {
       throw new Error("Login failed");
     }
