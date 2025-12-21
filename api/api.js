@@ -2,7 +2,7 @@ import StudentVue from "studentvue.js";
 import crypto from "crypto";
 import cookie from "cookie";
 
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "21643a2fa460d306a3c3d2598c3ea0fd";
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
 
 function encrypt(text) {
   const iv = crypto.randomBytes(16);
