@@ -1,5 +1,6 @@
 import StudentVue from "studentvue.js";
 import crypto from "crypto";
+import cookie from "cookie";
 
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
 
@@ -34,11 +35,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { district, username, password } = req.body;
+    let { district, username, password } = req.body;
 
     if (!username || !password) {
-      const cookieHeader = req.headers.cookie || "";
-      const cookies = Object.fromEntries(cookieHeader.split('; ').map(c => c.split('=')));
+      const cookies = cookie.parse(req.headers.cookie || "");
       
       if (cookies.auth_token) {
         try {
@@ -58,13 +58,16 @@ export default async function handler(req, res) {
     }
 
     const client = await StudentVue.login(district, username, password);
-    const gradebook = await client.getGradebook();
+    let gradebook = await client.getGradebook();
+    if (typeof gradebook !== "string") {
+      gradebook = JSON.stringify(gradebook);
+    }
 
     const encryptedCookie = encrypt(JSON.stringify({ district, username, password }));
 
     res.setHeader("Set-Cookie", `auth_token=${encryptedCookie}; HttpOnly; Secure; Path=/; Max-Age=2592000; SameSite=Strict`);
 
-    return res.status(200).json(gradebook);
+    return res.status(200).send(gradebook);
 
   } catch (err) {
     console.error(err);
