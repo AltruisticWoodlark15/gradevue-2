@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  document.body.style.visibility = "hidden";
+  document.getElementById("header").style.display = "none";
+  document.getElementById("main").style.display = "none";
+  document.getElementById("footer").style.display = "none";
+
   const form = document.querySelector("form");
   
   if (form) {
@@ -37,13 +40,14 @@ const checkSession = async (form, loadingMsg) => {
 
       const parsedData = JSON.parse(data);
       drawCourses(parsedData);
-      document.body.style.visibility = "visible";
     } else {
       throw new Error("Login failed");
     }
   } catch (e) {
     if (loadingMsg) loadingMsg.remove();
-    document.body.style.visibility = "visible";
+    document.getElementById("header").style.display = "";
+    document.getElementById("main").style.display = "";
+    document.getElementById("footer").style.display = "";
   }
 };
 
