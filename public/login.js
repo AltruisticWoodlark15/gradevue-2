@@ -31,13 +31,6 @@ const checkSession = async (form, loadingMsg) => {
 
     if (response.ok) {
       const data = await response.json();
-      document.body.innerHTML = "";
-
-      const title = document.createElement("h1");
-      title.id = "site-title";
-      title.textContent = "Grades";
-      document.body.appendChild(title);
-
       const parsedData = JSON.parse(data);
       drawCourses(parsedData);
     } else {
@@ -160,6 +153,11 @@ const drawAssignments = (parsedData, courseID) => {
 
 const drawCourses = parsedData => {
   document.body.innerHTML = "";
+  const title = document.createElement("h1");
+  title.id = "site-title";
+  title.textContent = "Grades";
+  document.body.appendChild(title);
+
   const footer = document.getElementById("footer");
   const courses = parsedData.Gradebook.Courses.Course;
 
@@ -212,14 +210,6 @@ const loginAndFetch = async () => {
   }
 
   const data = await response.json();
-  document.body.innerHTML = "";
-
-  const title = document.createElement("h1");
-  title.id = "site-title";
-  title.textContent = "Grades";
-  document.body.appendChild(title);
-
   const parsedData = JSON.parse(data);
   drawCourses(parsedData);
 };
-
