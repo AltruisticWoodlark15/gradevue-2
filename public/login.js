@@ -213,4 +213,3 @@ const loginAndFetch = async () => {
   const parsedData = JSON.parse(data);
   drawCourses(parsedData);
 };
-
