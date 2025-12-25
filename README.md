@@ -11,3 +11,12 @@ Feature List
 * [ ] Course planning
 * [ ] GPA calculator w| hypothetical mode
 * [ ] Games unlocked by straight A's
+
+# Hosting Locally
+
+Ensure that npm and next.js are installed.
+
+```
+npm run build
+npm run start
+```
